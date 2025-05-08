@@ -1,17 +1,92 @@
 from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task
+from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
 from crewai_tools import SerperDevTool, WebScraperTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from typing import List
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+from typing import List, Dict, Any
+import os
+import json
+from datetime import datetime
+
 
 @CrewBase
 class WebContentCreationCrew():
     """Web Content Creation crew for generating blog posts, LinkedIn content, and newsletters"""
     agents: List[BaseAgent]
     tasks: List[Task]
+    
+    @before_kickoff
+    def before_kickoff_function(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Prepare the environment before starting the content creation process.
+        - Creates output directory if it doesn't exist
+        - Logs the start of the process
+        - Enhances the inputs with additional metadata
+        """
+        print(f"🚀 Starting content creation process for topic: {inputs.get('topic', 'Unknown')}")
+        print(f"⏱️ Process started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        
+        # Create output directory if it doesn't exist
+        os.makedirs("output", exist_ok=True)
+        
+        # Enhance inputs with additional metadata
+        enhanced_inputs = inputs.copy()
+        enhanced_inputs["timestamp"] = datetime.now().isoformat()
+        enhanced_inputs["content_id"] = f"content_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        
+        # Save inputs for reference
+        with open(f"output/content_request_{enhanced_inputs['content_id']}.json", "w") as f:
+            json.dump(enhanced_inputs, f, indent=4)
+            
+        print(f"✅ Environment prepared. Content ID: {enhanced_inputs['content_id']}")
+        return enhanced_inputs
+
+    @after_kickoff
+    def after_kickoff_function(self, result: Any) -> Any:
+        """
+        Post-process the results after the content creation is complete.
+        - Organizes final output files
+        - Generates a summary report
+        - Logs completion
+        """
+        print(f"🏁 Content creation process completed at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        
+        # Extract the content ID from the final result if available
+        content_id = "unknown"
+        if hasattr(result, "get") and callable(result.get):
+            if "content_id" in result:
+                content_id = result.get("content_id")
+        
+        # Create a summary of all generated files
+        summary = {
+            "completion_time": datetime.now().isoformat(),
+            "content_id": content_id,
+            "generated_files": []
+        }
+        
+        # List all generated files in the output directory
+        for filename in os.listdir("output"):
+            file_path = os.path.join("output", filename)
+            if os.path.isfile(file_path):
+                file_info = {
+                    "filename": filename,
+                    "size_bytes": os.path.getsize(file_path),
+                    "last_modified": datetime.fromtimestamp(os.path.getmtime(file_path)).isoformat()
+                }
+                summary["generated_files"].append(file_info)
+        
+        # Save summary report
+        with open(f"output/content_summary_{content_id}.json", "w") as f:
+            json.dump(summary, f, indent=4)
+            
+        print(f"✅ Generated {len(summary['generated_files'])} content files:")
+        for file_info in summary["generated_files"]:
+            print(f"  - {file_info['filename']}")
+        
+        print("\n📋 Content creation summary saved to:")
+        print(f"  output/content_summary_{content_id}.json")
+        
+        return result
+
 
     @agent
     def content_manager(self) -> Agent:
