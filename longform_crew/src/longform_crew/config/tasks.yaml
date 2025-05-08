@@ -1,17 +1,196 @@
+content_planning_task:
+  description: >
+    Create a comprehensive content plan for {topic} focused on web development and website improvement.
+    Consider the unique requirements for each platform (blog, LinkedIn, newsletter).
+    Identify 3-5 key angles or subtopics to cover.
+    For each angle, outline the main points, potential statistics needed, and how it should be adapted across platforms.
+    Focus on educational content that teaches small business owners about website development, SEO, and digital best practices.
+    Consider the current year is 2025 and include any relevant trends or updates.
+  expected_output: >
+    A detailed content plan in markdown format that includes:
+    1. Main topic summary and why it matters to small business owners
+    2. 3-5 key angles/subtopics with bullet points for each
+    3. Platform-specific considerations (tone, length, approach) for blog, LinkedIn, and newsletter
+    4. Specific research questions for the researcher to investigate
+  agent: content_manager
+  output_file: content_plan.md
+
 research_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Conduct thorough research about {topic} based on the content plan provided.
+    Focus specifically on the key angles and research questions identified in the plan.
+    Find current statistics, best practices, case studies, and expert opinions related to web development, SEO, and website improvement.
+    Verify that all information is current as of 2025.
+    Include specific examples that would resonate with small business owners.
+    For each statistic or claim, note the source to ensure credibility.
+    Identify any controversies or differing expert opinions where relevant.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
+    A comprehensive research brief in markdown format containing:
+    1. Organized findings for each key angle/subtopic requested
+    2. At least 2-3 current statistics for each subtopic with sources
+    3. Expert opinions and best practices
+    4. Real-world examples or case studies
+    5. Any notable trends for 2025
+    Include clear section headers and bulleted lists where appropriate.
   agent: researcher
+  context: [content_planning_task]
+  output_file: research_brief.md
 
-reporting_task:
+blog_writing_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Create a comprehensive blog post of approximately 1000 words on {topic} using the research brief provided.
+    The blog should educate small business owners about website development, SEO, or digital best practices.
+    Use a professional but accessible tone that explains technical concepts clearly.
+    Structure the content with an engaging introduction, clear subheadings, and a conclusion with next steps.
+    Include practical, actionable advice that readers can implement immediately.
+    Incorporate relevant statistics and expert opinions from the research brief.
+    Use examples that would resonate with small business owners.
+    Optimize the content for SEO with appropriate heading structure and keyword usage.
+    The goal is to establish thought leadership while providing genuine educational value.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A complete, well-structured 1000-word blog post in markdown format with:
+    1. Engaging headline and introduction that states the problem/opportunity
+    2. 4-6 clear subheadings (H2s) with possible H3 subpoints
+    3. Relevant statistics and examples properly integrated
+    4. A conclusion with clear next steps or call to action
+    5. Professional yet accessible tone suitable for business owners
+    The content should demonstrate expertise without being overly technical or jargon-heavy.
+  agent: blog_writer
+  context: [content_planning_task, research_task]
+  output_file: blog_post.md
+
+linkedin_writing_task:
+  description: >
+    Create a professional LinkedIn post (300-500 words) that shares key insights from the blog post on {topic}.
+    Focus on establishing thought leadership and driving engagement from business professionals.
+    Use a professional, authoritative tone appropriate for LinkedIn's business audience.
+    Start with a strong hook to capture attention in the first two lines.
+    Include 1-2 key statistics or insights that demonstrate expertise.
+    Frame the content around a business problem or opportunity related to websites/web development.
+    Structure the post with short, scannable paragraphs and use line breaks effectively.
+    End with a thought-provoking question or call to action to increase engagement.
+    Include a brief mention of the full blog post being available for more information.
+  expected_output: >
+    A LinkedIn post of 300-500 words that:
+    1. Begins with an attention-grabbing hook in the first two lines
+    2. Uses short, scannable paragraphs with strategic line breaks
+    3. Incorporates 1-2 key statistics or insights from the research
+    4. Demonstrates expertise without being overly self-promotional 
+    5. Ends with an engagement prompt or question
+    6. Includes a brief reference to the full blog post
+    The tone should be professional, confident, and authoritative.
+  agent: linkedin_writer
+  context: [content_planning_task, research_task, blog_writing_task]
+  output_file: linkedin_post.md
+
+newsletter_writing_task:
+  description: >
+    Create engaging newsletter content on {topic} that complements the blog post and LinkedIn content.
+    Use a conversational, friendly tone while maintaining professionalism.
+    Begin with a brief personal introduction or timely hook related to website development.
+    Summarize the key value points from the blog in 3-5 bullet points that highlight the most actionable insights.
+    Each bullet point should be concise yet provide clear value on its own.
+    Include a brief teaser paragraph that encourages readers to read the full blog post.
+    End with a clear call-to-action to read the full blog post.
+    Keep the entire newsletter section under 400 words.
+  expected_output: >
+    Newsletter content in markdown format containing:
+    1. Brief, conversational introduction (2-3 sentences)
+    2. 3-5 value-focused bullet points highlighting key actionable insights
+    3. A teaser paragraph that creates interest in the full blog post
+    4. Clear call-to-action with link placeholder
+    The tone should be friendly and conversational while maintaining professionalism.
+    Total length should be under 400 words.
+  agent: newsletter_writer
+  context: [content_planning_task, research_task, blog_writing_task]
+  output_file: newsletter_content.md
+
+blog_editing_task:
+  description: >
+    Review and edit the blog post on {topic} to ensure it meets all quality standards.
+    Check for grammatical errors, punctuation issues, and typos.
+    Ensure the content flows logically with smooth transitions between sections.
+    Verify that all technical information is accurate and properly explained for a business audience.
+    Confirm that statistics and claims are properly supported by the research.
+    Review for SEO best practices (heading structure, keyword usage, readability).
+    Ensure the blog post maintains a consistent tone and voice throughout.
+    Check that the introduction effectively hooks the reader and the conclusion provides clear next steps.
+    Make any necessary edits to improve clarity, engagement, and overall quality.
+  expected_output: >
+    A polished, publication-ready blog post in markdown format with:
+    1. All grammatical errors, typos, and punctuation issues corrected
+    2. Improved flow and transitions where needed
+    3. Technical accuracy confirmed
+    4. Consistent tone and voice throughout
+    5. SEO optimization verified
+    Include a brief summary of the major edits made and any suggestions for future content.
+  agent: editor
+  context: [blog_writing_task, research_task]
+  output_file: blog_post_final.md
+
+linkedin_editing_task:
+  description: >
+    Review and optimize the LinkedIn post on {topic} to maximize professional engagement.
+    Check for grammatical errors, punctuation issues, and typos.
+    Ensure the hook is truly compelling and appears within the first two lines.
+    Verify that the post follows LinkedIn best practices for formatting and engagement.
+    Confirm that the post maintains a professional, authoritative tone appropriate for LinkedIn.
+    Check that paragraphs are short and scannable with effective use of line breaks.
+    Ensure the closing question or call-to-action is designed to maximize comments and engagement.
+    Make any necessary edits to improve clarity, engagement, and overall quality.
+  expected_output: >
+    A polished, engagement-optimized LinkedIn post that:
+    1. Has all grammatical and style issues corrected
+    2. Features an attention-grabbing hook in the first two lines
+    3. Uses optimal formatting for LinkedIn's platform
+    4. Maintains a professional, authoritative tone
+    5. Ends with an effective engagement prompt
+    Include a brief note about the edits made and potential engagement predictions.
+  agent: editor
+  context: [linkedin_writing_task]
+  output_file: linkedin_post_final.md
+
+newsletter_editing_task:
+  description: >
+    Review and optimize the newsletter content on {topic} to ensure it achieves maximum readability and click-through.
+    Check for grammatical errors, punctuation issues, and typos.
+    Ensure the tone is appropriately conversational and friendly while remaining professional.
+    Verify that bullet points are concise, value-focused, and actionable.
+    Confirm that the teaser creates genuine interest in reading the full blog post.
+    Check that the call-to-action is clear and compelling.
+    Make any necessary edits to improve clarity, engagement, and overall quality.
+    Ensure the content aligns with email newsletter best practices.
+  expected_output: >
+    Polished newsletter content in markdown format with:
+    1. All grammatical and style issues corrected
+    2. Optimized bullet points that provide clear value
+    3. Compelling teaser that drives interest in the full blog
+    4. Effective call-to-action
+    5. Appropriate conversational tone maintained throughout
+    Include a brief note about the edits made and suggestions for newsletter formatting.
+  agent: editor
+  context: [newsletter_writing_task]
+  output_file: newsletter_content_final.md
+
+final_review_task:
+  description: >
+    Conduct a comprehensive review of all content pieces for {topic} to ensure consistency, quality, and alignment across platforms.
+    Verify that key messages are consistent across the blog, LinkedIn post, and newsletter, while appropriately adapted for each platform.
+    Check that the tone is properly differentiated for each platform while maintaining brand consistency.
+    Confirm that all pieces effectively communicate the educational value around web development for business owners.
+    Identify any gaps, missed opportunities, or areas for improvement in the current content set.
+    Provide strategic recommendations for:
+    - Potential follow-up content pieces that would complement this material
+    - How to repurpose this content for other channels (e.g., Twitter threads, video scripts)
+    - Ways to measure the success of this content
+  expected_output: >
+    A final review report in markdown format containing:
+    1. Brief assessment of consistency and quality across all content pieces
+    2. Platform-specific strengths of each piece
+    3. Any remaining improvement opportunities (if applicable)
+    4. Strategic recommendations for follow-up content and repurposing
+    5. Suggested metrics to track the success of this content
+    Also include a complete package of the final versions of all content pieces.
+  agent: content_manager
+  context: [blog_editing_task, linkedin_editing_task, newsletter_editing_task]
+  output_file: final_review.md
