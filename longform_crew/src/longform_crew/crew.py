@@ -1,19 +1,18 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
-from crewai_tools import SerperDevTool, WebScraperTool
+from crewai_tools import SerperDevTool, ScrapeWebsiteTool, WebsiteSearchTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List, Dict, Any
 import os
 import json
 from datetime import datetime
 
-
 @CrewBase
 class WebContentCreationCrew():
     """Web Content Creation crew for generating blog posts, LinkedIn content, and newsletters"""
     agents: List[BaseAgent]
     tasks: List[Task]
-    
+
     @before_kickoff
     def before_kickoff_function(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -87,7 +86,6 @@ class WebContentCreationCrew():
         
         return result
 
-
     @agent
     def content_manager(self) -> Agent:
         return Agent(
@@ -100,7 +98,11 @@ class WebContentCreationCrew():
         return Agent(
             config=self.agents_config['researcher'],  # type: ignore[index]
             verbose=True,
-            tools=[SerperDevTool(), WebScraperTool()]  # Use both Serper for search and WebScraper for detailed content
+            tools=[
+                SerperDevTool(),               # For search queries
+                ScrapeWebsiteTool(),           # For scraping content from specific websites
+                WebsiteSearchTool()            # For searching within websites
+            ]
         )
 
     @agent

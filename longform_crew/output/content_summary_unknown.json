@@ -1,0 +1,61 @@
+{
+    "completion_time": "2025-05-08T18:04:53.750583",
+    "content_id": "unknown",
+    "generated_files": [
+        {
+            "filename": "blog_post.md",
+            "size_bytes": 3599,
+            "last_modified": "2025-05-08T18:04:30.503674"
+        },
+        {
+            "filename": "linkedin_post.md",
+            "size_bytes": 29,
+            "last_modified": "2025-05-08T18:04:30.835015"
+        },
+        {
+            "filename": "newsletter_content_final.md",
+            "size_bytes": 2826,
+            "last_modified": "2025-05-08T18:04:47.450036"
+        },
+        {
+            "filename": "final_review.md",
+            "size_bytes": 3773,
+            "last_modified": "2025-05-08T18:04:53.744483"
+        },
+        {
+            "filename": "linkedin_post_final.md",
+            "size_bytes": 1088,
+            "last_modified": "2025-05-08T18:04:42.027704"
+        },
+        {
+            "filename": "content_request_content_20250508_175739.json",
+            "size_bytes": 146,
+            "last_modified": "2025-05-08T17:57:39.750943"
+        },
+        {
+            "filename": "research_brief.md",
+            "size_bytes": 1915,
+            "last_modified": "2025-05-08T18:04:23.587616"
+        },
+        {
+            "filename": "content_plan.md",
+            "size_bytes": 2487,
+            "last_modified": "2025-05-08T18:04:14.742591"
+        },
+        {
+            "filename": "blog_post_final.md",
+            "size_bytes": 2845,
+            "last_modified": "2025-05-08T18:04:39.815648"
+        },
+        {
+            "filename": "newsletter_content.md",
+            "size_bytes": 2288,
+            "last_modified": "2025-05-08T18:04:35.416209"
+        },
+        {
+            "filename": "content_request_content_20250508_180410.json",
+            "size_bytes": 146,
+            "last_modified": "2025-05-08T18:04:10.666316"
+        }
+    ]
+}
