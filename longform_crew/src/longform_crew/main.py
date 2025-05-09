@@ -18,8 +18,13 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'topic': 'How small businesses benefit from having a nice website',
+        'current_year': str(datetime.now().year),
+        
+        "target_audience": "Small business owners with limited technical knowledge",
+        "business_goals": "Generate leads for web development services",
+        "content_tone": "Educational and approachable", # Options: "Professional", "Casual", "Technical", etc.
+        "key_messaging": "Emphasize ROI of having a nice website",
     }
     
     try:

@@ -1,6 +1,10 @@
 content_planning_task:
   description: >
     Create a comprehensive content plan for {topic} focused on web development and website improvement.
+    Target audience: {target_audience}
+    Business goals: {business_goals}
+    Content tone: {content_tone}
+    Key messaging: {key_messaging}
     Consider the unique requirements for each platform (blog, LinkedIn, newsletter).
     Identify 3-5 key angles or subtopics to cover.
     For each angle, outline the main points, potential statistics needed, and how it should be adapted across platforms.
